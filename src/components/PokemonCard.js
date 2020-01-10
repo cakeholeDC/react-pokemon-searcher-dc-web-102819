@@ -2,9 +2,55 @@ import React from 'react'
 import { Card } from 'semantic-ui-react'
 
 class PokemonCard extends React.Component {
-  render() {
+  constructor(){
+    super()
+    this.state = {
+      spriteVers: 'front'
+    }
+  }
+
+  findStatHP(stats){
     return (
-      <Card>
+      <React.Fragment>
+        <i className="icon heartbeat red" />
+        {stats.filter(stat => stat.name === "hp")[0].value} hp
+      </React.Fragment>
+    )
+  }
+
+  handleClick = () => {
+    let imgType = this.state.spriteVers === 'front' ? "back" : "front"
+    
+    this.setState({
+      spriteVers: imgType
+    })  
+  }
+
+  render() {
+    const {name, sprites, stats, abilities, moves} = this.props.data
+    return (
+      <Card
+        style={{backgroundColor: '#D8D8C2'}}
+        onClick={this.handleClick}
+        image={ this.state.spriteVers === 'front' ? sprites.front : sprites.back }
+        header={name}
+        extra={`${abilities.length} Abilities / ${moves.length} Moves`}
+        meta={this.findStatHP(stats)}
+      />
+    )
+  }
+}
+
+export default PokemonCard
+
+
+
+
+
+
+/*
+        
+<Card>
         <div>
           <div className="image">
             <img alt="oh no!" />
@@ -20,8 +66,12 @@ class PokemonCard extends React.Component {
           </div>
         </div>
       </Card>
-    )
-  }
-}
 
-export default PokemonCard
+
+
+
+              extra={<span>
+                <i className="icon heartbeat red" />
+                {stats[-1].value} hp
+              </span>}
+*/
